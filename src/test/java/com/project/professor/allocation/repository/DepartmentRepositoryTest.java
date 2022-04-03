@@ -34,9 +34,10 @@ public class DepartmentRepositoryTest {
 		// Arrange
 
 		// Act
+		Department dept1 = repository.findById(1L).orElse(null);
 
 		// Print
-
+		System.out.println(dept1);
 	}
 
 	@Test
@@ -75,10 +76,15 @@ public class DepartmentRepositoryTest {
 	@Test
 	public void save_update() throws ParseException {
 		// Arrange
+		Department dept = new Department();
+		dept.setName("Departamento de Física");
+		dept.setId(2L);
 
 		// Act
+		dept = repository.save(dept);
 
 		// Print
+		System.out.println(dept);
 
 	}
 
