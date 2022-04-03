@@ -3,11 +3,14 @@ package com.project.professor.allocation.repository;
 import java.text.ParseException;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
+
+import com.project.professor.allocation.entity.Professor;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -15,6 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(locations = "classpath:application.properties")
 public class ProfessorRepositoryTest {
 
+	@Autowired
 	ProfessorRepository repository;
 
     @Test
@@ -65,13 +69,16 @@ public class ProfessorRepositoryTest {
     @Test
     public void save_create() throws ParseException {
         // Arrange
-        
+        Professor prof = new Professor();
+        prof.setName("José Silva");
+        prof.setCpf("12345678909");
+        prof.setDepartmentId(1L);
 
         // Act
-        
+        prof = repository.save(prof);
 
         // Print
-        
+        System.out.println(prof);
     }
 
     @Test
