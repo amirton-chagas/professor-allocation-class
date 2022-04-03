@@ -6,15 +6,21 @@ import org.springframework.stereotype.Service;
 
 import com.project.professor.allocation.entity.Allocation;
 import com.project.professor.allocation.repository.AllocationRepository;
+import com.project.professor.allocation.repository.CourseRepository;
+import com.project.professor.allocation.repository.ProfessorRepository;
 
 @Service
 public class AllocationService {
 
 	private final AllocationRepository repository;
+	private final ProfessorRepository professorRepository;
+	private final CourseRepository courseRepository;
 
-	public AllocationService(AllocationRepository repository) {
+	public AllocationService(AllocationRepository repository, ProfessorRepository professorRepository, CourseRepository courseRepository) {
 		super();
 		this.repository = repository;
+		this.professorRepository = professorRepository;
+		this.courseRepository = courseRepository;
 	}
 
 	public List<Allocation> findAll() {
@@ -44,7 +50,12 @@ public class AllocationService {
 		if (hasCollision(allocation)) {
 			throw new RuntimeException();
 		} else {
-			return repository.save(allocation);
+			Allocation updated = repository.save(allocation);
+			
+			updated.setProfessor(professorRepository.findById(updated.getProfessorId()).orElse(null));
+			updated.setCourse(courseRepository.findById(updated.getCourseId()).orElse(null));
+			
+			return updated;
 		}
 	}
 
